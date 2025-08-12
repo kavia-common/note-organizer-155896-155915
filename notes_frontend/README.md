@@ -1,38 +1,57 @@
-# sv
+# Notes Frontend (SvelteKit)
 
-Everything you need to build a Svelte project, powered by [`sv`](https://github.com/sveltejs/cli).
+A minimalistic, light-themed notes application with a responsive sidebar and a main editing area. Features:
+- List notes
+- Create notes
+- Edit notes
+- Delete notes
+- Search notes
 
-## Creating a project
+Colors used:
+- Primary: `#4F46E5`
+- Secondary: `#6366F1`
+- Accent: `#F59E42`
 
-If you're seeing this, you've probably already done this step. Congrats!
+## Running locally
 
-```bash
-# create a new project in the current directory
-npx sv create
-
-# create a new project in my-app
-npx sv create my-app
-```
-
-## Developing
-
-Once you've created a project and installed dependencies with `npm install` (or `pnpm install` or `yarn`), start a development server:
+Install dependencies and start dev server:
 
 ```bash
+npm install
 npm run dev
-
-# or start the server and open the app in a new browser tab
-npm run dev -- --open
 ```
 
-## Building
+Open the app at the URL printed by the dev server.
 
-To create a production version of your app:
+## Backend configuration
+
+This app is ready to connect to the `notes_database` backend. Configure the base API URL using an environment variable:
+
+- Copy `.env.example` to `.env` and set:
+  ```
+  VITE_NOTES_API_BASE_URL=http://localhost:8000/api
+  ```
+
+If `VITE_NOTES_API_BASE_URL` is not set, the app will use `localStorage` as a fallback to persist notes.
+
+### Expected backend endpoints (REST)
+
+- `GET    /notes`                → list notes
+- `GET    /notes/{id}`           → get a note
+- `POST   /notes`                → create a note (body: { title, content })
+- `PUT    /notes/{id}`           → update a note (body: { title?, content? })
+- `DELETE /notes/{id}`           → delete a note
+- `GET    /notes?search=QUERY`   → search notes
+
+> You can replace or adjust the endpoints in `src/lib/services/api.ts` if your backend differs.
+
+## Project scripts
 
 ```bash
-npm run build
+npm run dev       # start dev server
+npm run build     # production build
+npm run preview   # preview production build
+npm run check     # type and svelte-check
+npm run lint      # eslint
+npm test          # unit tests (if any)
 ```
-
-You can preview the production build with `npm run preview`.
-
-> To deploy your app, you may need to install an [adapter](https://svelte.dev/docs/kit/adapters) for your target environment.

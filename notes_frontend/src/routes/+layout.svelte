@@ -1,17 +1,20 @@
 <script lang="ts">
-    import '../app.css';
-    let { children } = $props();
+  import '../app.css';
+  import Sidebar from '$lib/components/Sidebar.svelte';
+  import { loadNotes } from '$lib/stores/notes';
+  import { onMount } from 'svelte';
+
+  let { children } = $props();
+
+  onMount(() => {
+    // Initialize notes when app starts
+    loadNotes().catch((e) => console.error('Failed to load notes', e));
+  });
 </script>
 
-<main>
+<div class="container-app">
+  <Sidebar />
+  <div class="container-main">
     {@render children()}
-</main>
-
-<style>
-    main {
-        display: flex;
-        min-height: 100vh;
-        align-items: center;
-        justify-content: center;
-    }
-</style>
+  </div>
+</div>
